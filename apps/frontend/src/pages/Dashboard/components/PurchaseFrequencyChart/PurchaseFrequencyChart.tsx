@@ -1,46 +1,49 @@
+import { useState } from 'react';
 import { useTheme } from '@emotion/react';
 import { SectionCard } from '../../../../components/SectionCard/SectionCard';
 import { DatePicker } from '../../../../components/DatePicker/DatePicker';
 import { StatusMessage } from '../../../../components/StatusMessage/StatusMessage';
-import { usePurchaseFrequencyChart } from './usePurchaseFrequencyChart';
 import { ChartContent } from './ChartContent/ChartContent';
 import { UI_MESSAGES } from '../../../../constants/ui';
+import { usePurchaseFrequency } from '../../../../queries/purchase';
+import { getTodayKST } from '../../../../utils/date';
+import { DEFAULT_DATE_RANGE } from '../../../../constants/date';
 
 export const PurchaseFrequencyChart = () => {
-  const {
-    today,
-    dateRange,
-    handleFromChange,
-    handleToChange,
-    data,
-    isLoading,
-    error,
-    isDataEmpty,
-  } = usePurchaseFrequencyChart();
   const theme = useTheme();
+  const today = getTodayKST();
+  const [dateRange, setDateRange] = useState(DEFAULT_DATE_RANGE);
+
+  const { data, isLoading, error } = usePurchaseFrequency(
+    dateRange.from,
+    dateRange.to,
+  );
+
+  const isDataEmpty =
+    !isLoading && !error && (!data?.length || data.every((d) => d.count === 0));
+
+  const handleDateChange = (type: 'from' | 'to', value: string) => {
+    setDateRange((prev) => {
+      if (type === 'from')
+        return {
+          from: value,
+          to: !prev.to || value > prev.to ? value : prev.to,
+        };
+      return { ...prev, to: value };
+    });
+  };
 
   const renderContent = () => {
-    if (isLoading) {
+    if (isLoading)
       return <StatusMessage title={UI_MESSAGES.LOADING.PURCHASE_FREQUENCY} />;
-    }
-
-    if (error) {
-      return <StatusMessage title={error.message} isError />;
-    }
-
-    if (isDataEmpty) {
+    if (error) return <StatusMessage title={error.message} isError />;
+    if (isDataEmpty || !data)
       return (
         <StatusMessage
           title={UI_MESSAGES.EMPTY.PURCHASE_FREQUENCY_DESCRIPTION}
         />
       );
-    }
-
-    if (data) {
-      return <ChartContent data={data} theme={theme} />;
-    }
-
-    return null;
+    return <ChartContent data={data} theme={theme} />;
   };
 
   return (
@@ -51,19 +54,18 @@ export const PurchaseFrequencyChart = () => {
           <DatePicker
             label="시작"
             value={dateRange.from}
-            onChange={handleFromChange}
+            onChange={(v) => handleDateChange('from', v)}
             max={dateRange.to || today}
           />
           <DatePicker
             label="종료"
             value={dateRange.to}
-            onChange={handleToChange}
+            onChange={(v) => handleDateChange('to', v)}
             min={dateRange.from}
             max={today}
           />
         </SectionCard.Controls>
       </SectionCard.Header>
-
       <SectionCard.Content>{renderContent()}</SectionCard.Content>
     </SectionCard>
   );

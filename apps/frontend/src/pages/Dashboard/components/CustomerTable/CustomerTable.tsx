@@ -1,54 +1,57 @@
-import { useCustomerTable } from './useCustomerTable';
+import { useState } from 'react';
 import * as S from './CustomerTable.styles';
-
 import { PurchaseDetailModal } from '../../../../components/PurchaseDetailModal/PurchaseDetailModal';
 import { SectionCard } from '../../../../components/SectionCard/SectionCard';
 import { UI_MESSAGES } from '../../../../constants/ui';
+import { useCustomers } from '../../../../queries/customer';
+import { useDebounce } from '../../../../hooks/useDebounce';
+
+interface SelectedCustomer {
+  id: number;
+  name: string;
+}
 
 export const CustomerTable = () => {
-  const {
-    nameFilter,
+  const [nameFilter, setNameFilter] = useState('');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | undefined>(
+    undefined,
+  );
+  const [selectedCustomer, setSelectedCustomer] =
+    useState<SelectedCustomer | null>(null);
+
+  const debouncedNameFilter = useDebounce(nameFilter);
+  const { data, isLoading, error } = useCustomers(
     sortOrder,
-    selectedCustomer,
-    data,
-    isLoading,
-    error,
-    isSearching,
-    handleNameFilterChange,
-    handleSortOrderChange,
-    openDetailModal,
-    closeDetailModal,
-  } = useCustomerTable();
+    debouncedNameFilter.trim() || undefined,
+  );
+  const isSearching = nameFilter.trim() !== debouncedNameFilter.trim();
 
   const renderTableBody = () => {
-    if (isSearching) {
+    if (isSearching)
       return (
         <tr>
           <S.Td colSpan={4}>{UI_MESSAGES.SEARCHING.CUSTOMER}</S.Td>
         </tr>
       );
-    }
-
-    if (isLoading) {
+    if (isLoading)
       return (
         <tr>
           <S.Td colSpan={4}>{UI_MESSAGES.LOADING.CUSTOMER_TABLE}</S.Td>
         </tr>
       );
-    }
-
-    if (error) {
+    if (error)
       return (
         <tr>
           <S.Td colSpan={4}>{error.message}</S.Td>
         </tr>
       );
-    }
 
     return data?.map((customer) => (
       <S.Tr
         key={customer.id}
-        onClick={() => openDetailModal(customer.id, customer.name)}
+        onClick={() =>
+          setSelectedCustomer({ id: customer.id, name: customer.name })
+        }
       >
         <S.Td>#{customer.id}</S.Td>
         <S.Td>{customer.name}</S.Td>
@@ -67,12 +70,16 @@ export const CustomerTable = () => {
             type="text"
             placeholder="이름으로 검색"
             value={nameFilter}
-            onChange={(e) => handleNameFilterChange(e.target.value)}
+            onChange={(e) => setNameFilter(e.target.value)}
           />
           <S.Select
             value={sortOrder || 'id'}
             onChange={(e) =>
-              handleSortOrderChange(e.target.value as 'asc' | 'desc' | 'id')
+              setSortOrder(
+                e.target.value === 'id'
+                  ? undefined
+                  : (e.target.value as 'asc' | 'desc'),
+              )
             }
           >
             <option value="id">ID순</option>
@@ -102,7 +109,7 @@ export const CustomerTable = () => {
         <PurchaseDetailModal
           customerId={selectedCustomer.id}
           customerName={selectedCustomer.name}
-          onClose={closeDetailModal}
+          onClose={() => setSelectedCustomer(null)}
         />
       )}
     </SectionCard>
