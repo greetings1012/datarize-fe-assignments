@@ -1,6 +1,6 @@
 import { Bar, BarChart, CartesianGrid, LabelList, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 import { usePurchaseFrequency } from '../../hooks/queries';
-import { SectionCard } from '../SectionCard/SectionCard';
+import { SectionCard } from '../_common/SectionCard/SectionCard';
 import { DatePicker } from '../DatePicker/DatePicker';
 import * as S from './PurchaseFrequencyChart.styles';
 import { useTheme } from '@emotion/react';

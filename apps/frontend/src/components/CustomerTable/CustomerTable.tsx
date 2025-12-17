@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useCustomers } from '../../hooks/queries';
 import { PurchaseDetailModal } from '../PurchaseDetailModal/PurchaseDetailModal';
-import { SectionCard } from '../SectionCard/SectionCard';
+import { SectionCard } from '../_common/SectionCard/SectionCard';
 import * as S from './CustomerTable.styles';
 
 export const CustomerTable = () => {
