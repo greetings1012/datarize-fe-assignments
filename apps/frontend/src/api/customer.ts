@@ -9,6 +9,8 @@ export const getCustomers = async (sortBy?: 'asc' | 'desc', name?: string) => {
 };
 
 export const getCustomerPurchases = async (id: number) => {
-  const { data } = await client.get<PurchaseDetail[]>(`/customers/${id}/purchases`);
+  const { data } = await client.get<PurchaseDetail[]>(
+    `/customers/${id}/purchases`,
+  );
   return data;
 };
