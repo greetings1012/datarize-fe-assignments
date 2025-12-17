@@ -1,18 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
-
 import { getPurchaseFrequency } from '../api/purchase';
 import { ApiError } from '../types/api';
 import { PurchaseFrequency } from '../types/purchase';
-import { shouldRetry } from '../utils/query';
+import { createQuery } from '../utils/query';
 
 export const usePurchaseFrequency = (from?: string, to?: string) => {
-  const fromDate = from;
   const toDate = to || from;
 
-  return useQuery<PurchaseFrequency[], ApiError>({
-    queryKey: ['purchase-frequency', fromDate, toDate],
-    queryFn: () => getPurchaseFrequency(fromDate, toDate),
-    enabled: Boolean(fromDate) && Boolean(toDate),
-    retry: shouldRetry,
+  return createQuery<PurchaseFrequency[], ApiError>({
+    queryKey: ['purchase-frequency', from, toDate],
+    queryFn: () => getPurchaseFrequency(from, toDate),
+    enabled: Boolean(from) && Boolean(toDate),
+    custom404Message: '표시할 데이터가 없습니다',
   });
 };

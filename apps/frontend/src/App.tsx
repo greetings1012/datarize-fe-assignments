@@ -3,24 +3,24 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { theme } from './styles/theme';
 import { GlobalStyles } from './styles/GlobalStyles';
 import { Dashboard } from './pages/Dashboard';
-import styled from '@emotion/styled';
+import { shouldRetry } from './utils/query';
 
-const queryClient = new QueryClient();
-
-const Layout = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
-`;
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: shouldRetry,
+      retryOnMount: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-        <Layout>
-          <Dashboard />
-        </Layout>
+        <Dashboard />
       </ThemeProvider>
     </QueryClientProvider>
   );

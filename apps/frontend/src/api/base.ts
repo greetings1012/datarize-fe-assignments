@@ -9,32 +9,27 @@ export const client = axios.create({
 
 client.interceptors.response.use(
   (response) => response,
-  (error: AxiosError) => {
-    const status = error.response?.status || 0;
+  (error: AxiosError | ApiError) => {
+    // 이미 ApiError인 경우 그대로 반환
+    if (error.name === 'ApiError') {
+      return Promise.reject(error);
+    }
+
+    // 네트워크 에러나 5xx 에러만 처리
+    const axiosError = error as AxiosError;
+    const status = axiosError.response?.status || 0;
     let message: string = API_ERROR_MESSAGES.UNKNOWN;
 
     if (!window.navigator.onLine) {
       message = API_ERROR_MESSAGES.NETWORK_ERROR;
-    }
-
-    switch (status) {
-      case 0:
-        message = API_ERROR_MESSAGES.SERVER_UNREACHABLE;
-        break;
-      case 401:
-        message = API_ERROR_MESSAGES.UNAUTHORIZED;
-        break;
-      case 404:
-        message = API_ERROR_MESSAGES.NOT_FOUND;
-        break;
-      case 500:
-        message = API_ERROR_MESSAGES.SERVER_ERROR;
-        break;
-      default:
-        message = API_ERROR_MESSAGES.UNKNOWN;
+    } else if (status === 0) {
+      message = API_ERROR_MESSAGES.SERVER_UNREACHABLE;
+    } else if (status >= 500) {
+      message = API_ERROR_MESSAGES.SERVER_ERROR;
     }
 
     const apiError: ApiError = {
+      name: 'ApiError',
       status,
       message,
     };
