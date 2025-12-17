@@ -1,13 +1,14 @@
-import { useState } from 'react';
 import { useTheme } from '@emotion/react';
-import { SectionCard } from '../../../../components/SectionCard/SectionCard';
+import { useState } from 'react';
+
 import { DatePicker } from '../../../../components/DatePicker/DatePicker';
+import { SectionCard } from '../../../../components/SectionCard/SectionCard';
 import { StatusMessage } from '../../../../components/StatusMessage/StatusMessage';
-import { ChartContent } from './ChartContent/ChartContent';
+import { DEFAULT_DATE_RANGE } from '../../../../constants/date';
 import { UI_MESSAGES } from '../../../../constants/ui';
 import { usePurchaseFrequency } from '../../../../queries/purchase';
 import { getTodayKST } from '../../../../utils/date';
-import { DEFAULT_DATE_RANGE } from '../../../../constants/date';
+import { ChartContent } from './ChartContent/ChartContent';
 
 export const PurchaseFrequencyChart = () => {
   const theme = useTheme();
@@ -26,25 +27,30 @@ export const PurchaseFrequencyChart = () => {
   // 시작 날짜(from)를 변경할 때 종료 날짜(to)가 시작일보다 앞서지 않도록 자동으로 보정
   const handleDateChange = (type: 'from' | 'to', value: string) => {
     setDateRange((prev) => {
-      if (type === 'from')
+      if (type === 'from') {
         return {
           from: value,
           to: !prev.to || value > prev.to ? value : prev.to,
         };
+      }
       return { ...prev, to: value };
     });
   };
 
   const renderContent = () => {
-    if (isLoading)
+    if (isLoading) {
       return <StatusMessage title={UI_MESSAGES.LOADING.PURCHASE_FREQUENCY} />;
-    if (error) return <StatusMessage title={error.message} isError />;
-    if (isDataEmpty || !data)
+    }
+    if (error) {
+      return <StatusMessage title={error.message} isError />;
+    }
+    if (isDataEmpty || !data) {
       return (
         <StatusMessage
           title={UI_MESSAGES.EMPTY.PURCHASE_FREQUENCY_DESCRIPTION}
         />
       );
+    }
     return <ChartContent data={data} theme={theme} />;
   };
 

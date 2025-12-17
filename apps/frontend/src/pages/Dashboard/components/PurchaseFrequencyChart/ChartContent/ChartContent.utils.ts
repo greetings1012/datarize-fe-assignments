@@ -1,10 +1,12 @@
-import { PurchaseFrequency } from '../../../../../types/purchase';
 import { PRICE_RANGES } from '../../../../../constants/price';
+import { PurchaseFrequency } from '../../../../../types/purchase';
 
 // 가격 범위를 간단한 라벨로 변환 ("0-20000" -> "~2만")
 export const formatPriceRangeLabel = (range: string): string => {
   const match = range.match(/(\d+)\s*-\s*(\d+)/);
-  if (!match) return range;
+  if (!match) {
+    return range;
+  }
 
   const min = parseInt(match[1], 10);
   const max = parseInt(match[2], 10);

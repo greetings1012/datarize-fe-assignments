@@ -1,12 +1,15 @@
 import { ThemeProvider } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { theme } from './styles/theme';
-import { GlobalStyles } from './styles/GlobalStyles';
+
 import { Dashboard } from './pages/Dashboard';
+import { GlobalStyles } from './styles/GlobalStyles';
+import { theme } from './styles/theme';
 
 // 쿼리 재시도 로직: 4xx 에러는 재시도하지 않음
 const shouldRetry = (failureCount: number, error: any) => {
-  if (failureCount >= 3) return false;
+  if (failureCount >= 3) {
+    return false;
+  }
 
   const status = error.originalError?.response?.status || error.status;
 

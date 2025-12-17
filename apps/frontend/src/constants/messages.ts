@@ -28,6 +28,8 @@ const STATUS_MESSAGE_MAP: Record<number, string> = {
 
 // 상태 코드를 받아 적절한 메시지를 반환하는 헬퍼 함수
 export const getErrorMessage = (status?: number): string => {
-  if (!status) return API_ERROR_MESSAGES.NETWORK_ERROR;
+  if (!status) {
+    return API_ERROR_MESSAGES.NETWORK_ERROR;
+  }
   return STATUS_MESSAGE_MAP[status] ?? API_ERROR_MESSAGES.UNKNOWN;
 };

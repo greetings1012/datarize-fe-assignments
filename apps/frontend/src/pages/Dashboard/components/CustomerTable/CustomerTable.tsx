@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import * as S from './CustomerTable.styles';
+
 import { PurchaseDetailModal } from '../../../../components/PurchaseDetailModal/PurchaseDetailModal';
 import { SectionCard } from '../../../../components/SectionCard/SectionCard';
 import { StatusMessage } from '../../../../components/StatusMessage/StatusMessage';
 import { UI_MESSAGES } from '../../../../constants/ui';
-import { useCustomers } from '../../../../queries/customer';
 import { useDebounce } from '../../../../hooks/useDebounce';
+import { useCustomers } from '../../../../queries/customer';
+import * as S from './CustomerTable.styles';
 
 interface SelectedCustomer {
   id: number;
@@ -30,7 +31,7 @@ export const CustomerTable = () => {
   const isSearching = nameFilter.trim() !== debouncedNameFilter.trim();
 
   const renderTableBody = () => {
-    if (isLoading || isSearching)
+    if (isLoading || isSearching) {
       return (
         <tr>
           <S.Td colSpan={4}>
@@ -38,7 +39,8 @@ export const CustomerTable = () => {
           </S.Td>
         </tr>
       );
-    if (error)
+    }
+    if (error) {
       return (
         <tr>
           <S.Td colSpan={4}>
@@ -46,6 +48,7 @@ export const CustomerTable = () => {
           </S.Td>
         </tr>
       );
+    }
 
     return data?.map((customer) => (
       <S.Tr

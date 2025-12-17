@@ -1,13 +1,14 @@
 import {
-  ResponsiveContainer,
+  Bar,
   BarChart,
   CartesianGrid,
-  XAxis,
-  YAxis,
-  Bar,
   Label,
   LabelList,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
 } from 'recharts';
+
 import { Theme } from '../../../../../styles/theme';
 import { PurchaseFrequency } from '../../../../../types/purchase';
 import * as S from './ChartContent.styles';

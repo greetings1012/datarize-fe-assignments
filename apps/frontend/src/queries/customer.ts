@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+
 import { client } from '../api/base';
 import { Customer, PurchaseDetail } from '../types/customer';
 

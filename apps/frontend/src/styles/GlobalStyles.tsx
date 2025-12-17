@@ -1,6 +1,7 @@
-import { Global, css } from '@emotion/react';
-import { Theme } from './theme';
+import { css, Global } from '@emotion/react';
+
 import { reset } from './reset';
+import { Theme } from './theme';
 
 export const GlobalStyles = () => (
   <Global
@@ -8,7 +9,9 @@ export const GlobalStyles = () => (
       ${reset}
 
       body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          'Helvetica Neue', Arial, sans-serif;
         background-color: ${theme.colors.background};
         color: ${theme.colors.textMain};
       }

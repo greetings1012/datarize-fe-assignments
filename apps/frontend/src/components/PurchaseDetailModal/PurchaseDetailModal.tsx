@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
-import { useCustomerPurchases } from '../../queries/customer';
-import { useLockBodyScroll } from '../../hooks/useLockBodyScroll';
-import { PurchaseDetail } from '../../types/customer';
+
 import { UI_MESSAGES } from '../../constants/ui';
+import { useLockBodyScroll } from '../../hooks/useLockBodyScroll';
+import { useCustomerPurchases } from '../../queries/customer';
+import { PurchaseDetail } from '../../types/customer';
 import { StatusMessage } from '../StatusMessage/StatusMessage';
 import * as S from './PurchaseDetailModal.styles';
 
@@ -27,7 +28,9 @@ export const PurchaseDetailModal = ({
 
   // 구매 내역을 날짜별로 그룹화 (최신순 정렬)
   const groupedPurchases = useMemo<GroupedPurchase[]>(() => {
-    if (!data) return [];
+    if (!data) {
+      return [];
+    }
 
     const groupedMap = data.reduce<Record<string, PurchaseDetail[]>>(
       (acc, purchase) => {

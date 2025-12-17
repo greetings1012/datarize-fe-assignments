@@ -8,7 +8,13 @@ interface DatePickerProps {
   max?: string;
 }
 
-export const DatePicker = ({ label, value, onChange, min, max }: DatePickerProps) => {
+export const DatePicker = ({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+}: DatePickerProps) => {
   return (
     <S.Container>
       {label && <S.Label>{label}</S.Label>}
