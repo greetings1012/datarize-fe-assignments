@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { usePurchaseFrequency } from '../../../queries/purchase';
-import { DateRange } from '../../../types/date';
-import { DEFAULT_DATE_RANGE } from '../../../constants/date';
-import { getTodayKST } from '../../../utils/date';
+import { getTodayKST } from '../../../../utils/date';
+import { DateRange } from '../../../../types/date';
+import { DEFAULT_DATE_RANGE } from '../../../../constants/date';
+import { usePurchaseFrequency } from '../../../../queries/purchase';
 
 export const usePurchaseFrequencyChart = () => {
   const today = getTodayKST();
@@ -25,9 +25,8 @@ export const usePurchaseFrequencyChart = () => {
 
   const isDataEmpty =
     !queryResults.isLoading &&
-    !queryResults.isError &&
-    (!queryResults.data ||
-      queryResults.data.length === 0 ||
+    !queryResults.error &&
+    (!queryResults.data?.length ||
       queryResults.data.every((item) => item.count === 0));
 
   return {
