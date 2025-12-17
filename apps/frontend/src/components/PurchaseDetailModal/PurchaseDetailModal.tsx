@@ -25,6 +25,7 @@ export const PurchaseDetailModal = ({
   useLockBodyScroll();
   const { data, isLoading, error } = useCustomerPurchases(customerId);
 
+  // 구매 내역을 날짜별로 그룹화 (최신순 정렬)
   const groupedPurchases = useMemo<GroupedPurchase[]>(() => {
     if (!data) return [];
 

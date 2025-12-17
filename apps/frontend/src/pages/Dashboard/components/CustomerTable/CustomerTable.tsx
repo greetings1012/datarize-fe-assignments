@@ -20,11 +20,13 @@ export const CustomerTable = () => {
   const [selectedCustomer, setSelectedCustomer] =
     useState<SelectedCustomer | null>(null);
 
+  // 검색어 debounce 적용
   const debouncedNameFilter = useDebounce(nameFilter);
   const { data, isLoading, error } = useCustomers(
     sortOrder,
     debouncedNameFilter.trim() || undefined,
   );
+  // debounce 대기 중인지 확인
   const isSearching = nameFilter.trim() !== debouncedNameFilter.trim();
 
   const renderTableBody = () => {

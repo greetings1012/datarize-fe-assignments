@@ -19,9 +19,11 @@ export const PurchaseFrequencyChart = () => {
     dateRange.to,
   );
 
+  // 데이터가 비어있는지 확인 (모든 count가 0인 경우 포함)
   const isDataEmpty =
     !isLoading && !error && (!data?.length || data.every((d) => d.count === 0));
 
+  // 시작 날짜(from)를 변경할 때 종료 날짜(to)가 시작일보다 앞서지 않도록 자동으로 보정
   const handleDateChange = (type: 'from' | 'to', value: string) => {
     setDateRange((prev) => {
       if (type === 'from')

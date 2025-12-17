@@ -4,12 +4,12 @@ import { theme } from './styles/theme';
 import { GlobalStyles } from './styles/GlobalStyles';
 import { Dashboard } from './pages/Dashboard';
 
+// 쿼리 재시도 로직: 4xx 에러는 재시도하지 않음
 const shouldRetry = (failureCount: number, error: any) => {
   if (failureCount >= 3) return false;
 
   const status = error.originalError?.response?.status || error.status;
 
-  // 클라이언트 에러(4xx)는 재시도하지 않음
   if (status && status >= 400 && status < 500) {
     return false;
   }
@@ -17,6 +17,7 @@ const shouldRetry = (failureCount: number, error: any) => {
   return true;
 };
 
+// React Query 기본 설정
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

@@ -1,6 +1,7 @@
 import { PurchaseFrequency } from '../../../../../types/purchase';
 import { PRICE_RANGES } from '../../../../../constants/price';
 
+// 가격 범위를 간단한 라벨로 변환 ("0-20000" -> "~2만")
 export const formatPriceRangeLabel = (range: string): string => {
   const match = range.match(/(\d+)\s*-\s*(\d+)/);
   if (!match) return range;
@@ -22,6 +23,7 @@ export const formatPriceRangeLabel = (range: string): string => {
   return `${minMan}~${maxMan}만`;
 };
 
+// 차트 데이터에 라벨 추가
 export const transformChartData = (data: PurchaseFrequency[]) => {
   return data.map((item) => ({
     ...item,
