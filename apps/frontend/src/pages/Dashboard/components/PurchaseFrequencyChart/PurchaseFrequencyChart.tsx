@@ -2,7 +2,7 @@ import { useTheme } from '@emotion/react';
 import { SectionCard } from '../../../../components/SectionCard/SectionCard';
 import { DatePicker } from '../../../../components/DatePicker/DatePicker';
 import { StatusMessage } from '../../../../components/StatusMessage/StatusMessage';
-import { usePurchaseFrequencyChart } from '../../hooks/usePurchaseFrequencyChart';
+import { usePurchaseFrequencyChart } from './usePurchaseFrequencyChart';
 import { ChartContent } from './ChartContent/ChartContent';
 import { UI_MESSAGES } from '../../../../constants/ui';
 
@@ -14,7 +14,6 @@ export const PurchaseFrequencyChart = () => {
     handleToChange,
     data,
     isLoading,
-    isError,
     error,
     isDataEmpty,
   } = usePurchaseFrequencyChart();
@@ -25,21 +24,14 @@ export const PurchaseFrequencyChart = () => {
       return <StatusMessage title={UI_MESSAGES.LOADING.PURCHASE_FREQUENCY} />;
     }
 
-    if (isError) {
-      return (
-        <StatusMessage
-          title={UI_MESSAGES.ERROR.PURCHASE_FREQUENCY}
-          description={error?.message}
-          isError
-        />
-      );
+    if (error) {
+      return <StatusMessage title={error.message} isError />;
     }
 
     if (isDataEmpty) {
       return (
         <StatusMessage
-          title={UI_MESSAGES.ERROR.NO_DATA}
-          description={UI_MESSAGES.EMPTY.PURCHASE_FREQUENCY_DESCRIPTION}
+          title={UI_MESSAGES.EMPTY.PURCHASE_FREQUENCY_DESCRIPTION}
         />
       );
     }

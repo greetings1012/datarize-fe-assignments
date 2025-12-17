@@ -22,20 +22,18 @@ export const PurchaseDetailModal = ({
   onClose,
 }: PurchaseDetailModalProps) => {
   useLockBodyScroll();
-  const { data, isLoading } = useCustomerPurchases(customerId);
+  const { data, isLoading, error } = useCustomerPurchases(customerId);
 
   const groupedPurchases = useMemo<GroupedPurchase[]>(() => {
     if (!data) return [];
 
-    const groupedMap = data.reduce(
+    const groupedMap = data.reduce<Record<string, PurchaseDetail[]>>(
       (acc, purchase) => {
-        if (!acc[purchase.date]) {
-          acc[purchase.date] = [];
-        }
+        acc[purchase.date] = acc[purchase.date] || [];
         acc[purchase.date].push(purchase);
         return acc;
       },
-      {} as Record<string, PurchaseDetail[]>,
+      {},
     );
 
     return Object.entries(groupedMap)
@@ -54,9 +52,11 @@ export const PurchaseDetailModal = ({
             <S.StatusMessage>
               {UI_MESSAGES.LOADING.PURCHASE_DETAIL}
             </S.StatusMessage>
+          ) : error ? (
+            <S.StatusMessage>{error.message}</S.StatusMessage>
           ) : groupedPurchases.length === 0 ? (
             <S.StatusMessage>
-              {UI_MESSAGES.ERROR.NO_PURCHASE_HISTORY}
+              {UI_MESSAGES.EMPTY.PURCHASE_FREQUENCY_DESCRIPTION}
             </S.StatusMessage>
           ) : (
             groupedPurchases.map((group) => (
