@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { getCustomerPurchases, getCustomers } from '../../api/customer';
-import { Customer, PurchaseDetail } from '../../types/customer';
 import { ApiError } from '../../types/api';
+import { Customer, PurchaseDetail } from '../../types/customer';
 
 export const useCustomers = (sortBy?: 'asc' | 'desc', name?: string) => {
   return useQuery<Customer[], ApiError>({
