@@ -13,7 +13,9 @@ client.interceptors.response.use(
     const status = error.response?.status || 0;
     let message: string = API_ERROR_MESSAGES.UNKNOWN;
 
-    if (!window.navigator.onLine) message = API_ERROR_MESSAGES.NETWORK_ERROR;
+    if (!window.navigator.onLine) {
+      message = API_ERROR_MESSAGES.NETWORK_ERROR;
+    }
 
     switch (status) {
       case 0:
