@@ -1,7 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { PurchaseFrequency } from '../types/purchase';
+
 import { getPurchaseFrequency } from '../api/purchase';
 import { ApiError } from '../types/api';
+import { PurchaseFrequency } from '../types/purchase';
+import { shouldRetry } from '../utils/query';
 
 export const usePurchaseFrequency = (from?: string, to?: string) => {
   const fromDate = from;
@@ -11,5 +13,6 @@ export const usePurchaseFrequency = (from?: string, to?: string) => {
     queryKey: ['purchase-frequency', fromDate, toDate],
     queryFn: () => getPurchaseFrequency(fromDate, toDate),
     enabled: Boolean(fromDate) && Boolean(toDate),
+    retry: shouldRetry,
   });
 };
