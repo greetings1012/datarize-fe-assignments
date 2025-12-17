@@ -2,6 +2,7 @@ import { useState } from 'react';
 import * as S from './CustomerTable.styles';
 import { PurchaseDetailModal } from '../../../../components/PurchaseDetailModal/PurchaseDetailModal';
 import { SectionCard } from '../../../../components/SectionCard/SectionCard';
+import { StatusMessage } from '../../../../components/StatusMessage/StatusMessage';
 import { UI_MESSAGES } from '../../../../constants/ui';
 import { useCustomers } from '../../../../queries/customer';
 import { useDebounce } from '../../../../hooks/useDebounce';
@@ -27,22 +28,20 @@ export const CustomerTable = () => {
   const isSearching = nameFilter.trim() !== debouncedNameFilter.trim();
 
   const renderTableBody = () => {
-    if (isSearching)
+    if (isLoading || isSearching)
       return (
         <tr>
-          <S.Td colSpan={4}>{UI_MESSAGES.SEARCHING.CUSTOMER}</S.Td>
-        </tr>
-      );
-    if (isLoading)
-      return (
-        <tr>
-          <S.Td colSpan={4}>{UI_MESSAGES.LOADING.CUSTOMER_TABLE}</S.Td>
+          <S.Td colSpan={4}>
+            <StatusMessage title={UI_MESSAGES.LOADING.CUSTOMER_TABLE} />
+          </S.Td>
         </tr>
       );
     if (error)
       return (
         <tr>
-          <S.Td colSpan={4}>{error.message}</S.Td>
+          <S.Td colSpan={4}>
+            <StatusMessage title={error.message} isError />
+          </S.Td>
         </tr>
       );
 

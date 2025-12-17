@@ -8,7 +8,4 @@ export const UI_MESSAGES = {
   EMPTY: {
     PURCHASE_FREQUENCY_DESCRIPTION: '선택하신 기간에는 구매 내역이 없습니다.',
   },
-  SEARCHING: {
-    CUSTOMER: '검색 중...',
-  },
 } as const;

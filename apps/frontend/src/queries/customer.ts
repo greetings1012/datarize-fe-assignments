@@ -3,12 +3,23 @@ import { client } from '../api/base';
 import { Customer, PurchaseDetail } from '../types/customer';
 
 const getCustomers = async (sortBy?: 'asc' | 'desc', name?: string) => {
-  const { data } = await client.get<Customer[]>('/customers', { params: { sortBy, name } });
-  return data;
+  try {
+    const { data } = await client.get<Customer[]>('/customers', {
+      params: { sortBy, name },
+    });
+    return data;
+  } catch (error: any) {
+    if (error.status === 404) {
+      throw { ...error, message: '검색 결과가 없습니다.' };
+    }
+    throw error;
+  }
 };
 
 const getCustomerPurchases = async (id: number) => {
-  const { data } = await client.get<PurchaseDetail[]>(`/customers/${id}/purchases`);
+  const { data } = await client.get<PurchaseDetail[]>(
+    `/customers/${id}/purchases`,
+  );
   return data;
 };
 

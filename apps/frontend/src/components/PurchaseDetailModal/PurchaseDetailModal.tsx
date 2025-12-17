@@ -3,6 +3,7 @@ import { useCustomerPurchases } from '../../queries/customer';
 import { useLockBodyScroll } from '../../hooks/useLockBodyScroll';
 import { PurchaseDetail } from '../../types/customer';
 import { UI_MESSAGES } from '../../constants/ui';
+import { StatusMessage } from '../StatusMessage/StatusMessage';
 import * as S from './PurchaseDetailModal.styles';
 
 interface PurchaseDetailModalProps {
@@ -49,15 +50,13 @@ export const PurchaseDetailModal = ({
 
         <S.List>
           {isLoading ? (
-            <S.StatusMessage>
-              {UI_MESSAGES.LOADING.PURCHASE_DETAIL}
-            </S.StatusMessage>
+            <StatusMessage title={UI_MESSAGES.LOADING.PURCHASE_DETAIL} />
           ) : error ? (
-            <S.StatusMessage>{error.message}</S.StatusMessage>
+            <StatusMessage title={error.message} isError />
           ) : groupedPurchases.length === 0 ? (
-            <S.StatusMessage>
-              {UI_MESSAGES.EMPTY.PURCHASE_FREQUENCY_DESCRIPTION}
-            </S.StatusMessage>
+            <StatusMessage
+              title={UI_MESSAGES.EMPTY.PURCHASE_FREQUENCY_DESCRIPTION}
+            />
           ) : (
             groupedPurchases.map((group) => (
               <S.DateGroup key={group.date}>
