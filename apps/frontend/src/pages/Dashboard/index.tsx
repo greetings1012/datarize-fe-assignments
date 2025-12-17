@@ -1,6 +1,6 @@
-import { CustomerTable } from '../../components/CustomerTable/CustomerTable';
-import { PurchaseFrequencyChart } from '../../components/PurchaseFrequencyChart/PurchaseFrequencyChart';
-import * as S from './Dashboard.styles';
+import { CustomerTable } from './components/CustomerTable/CustomerTable';
+import { PurchaseFrequencyChart } from './components/PurchaseFrequencyChart/PurchaseFrequencyChart';
+import * as S from './index.styles';
 
 export const Dashboard = () => {
   return (
