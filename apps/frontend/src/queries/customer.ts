@@ -1,21 +1,28 @@
-import { getCustomerPurchases, getCustomers } from '../api/customer';
-import { ApiError } from '../types/api';
+import { useQuery } from '@tanstack/react-query';
+import { client } from '../api/base';
 import { Customer, PurchaseDetail } from '../types/customer';
-import { createQuery } from '../utils/query';
+
+const getCustomers = async (sortBy?: 'asc' | 'desc', name?: string) => {
+  const { data } = await client.get<Customer[]>('/customers', { params: { sortBy, name } });
+  return data;
+};
+
+const getCustomerPurchases = async (id: number) => {
+  const { data } = await client.get<PurchaseDetail[]>(`/customers/${id}/purchases`);
+  return data;
+};
 
 export const useCustomers = (sortBy?: 'asc' | 'desc', name?: string) => {
-  return createQuery<Customer[], ApiError>({
+  return useQuery({
     queryKey: ['customers', sortBy, name],
     queryFn: () => getCustomers(sortBy, name),
-    custom404Message: '검색 결과가 없습니다.',
   });
 };
 
 export const useCustomerPurchases = (customerId: number) => {
-  return createQuery<PurchaseDetail[], ApiError>({
+  return useQuery({
     queryKey: ['customer-purchases', customerId],
     queryFn: () => getCustomerPurchases(customerId),
     enabled: Boolean(customerId),
-    custom404Message: '고객을 찾을 수 없습니다.',
   });
 };
