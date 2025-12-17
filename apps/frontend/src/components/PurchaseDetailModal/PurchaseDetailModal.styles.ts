@@ -43,7 +43,7 @@ export const CloseButton = styled.button`
 
 export const Title = styled.h2`
   margin-bottom: 1.5rem;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.textMain};
 `;
@@ -52,20 +52,34 @@ export const List = styled.div`
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
+`;
+
+export const DateGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`;
+
+export const DateHeader = styled.div`
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid ${({ theme }) => theme.colors.border};
 `;
 
 export const PurchaseCard = styled.div`
   display: flex;
+  align-items: center;
   gap: 1rem;
+  background-color: ${({ theme }) => theme.colors.background};
   padding: 1rem;
-  border: 1px solid ${({ theme }) => theme.colors.hover};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
 `;
 
 export const ProductImg = styled.img`
-  width: 60px;
-  height: 60px;
+  width: 5rem;
+  height: 5rem;
   border-radius: 8px;
   object-fit: cover;
 `;

@@ -1,23 +1,9 @@
-import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-`;
-
-export const ChartContainer = styled.div`
-  height: 300px;
-  width: 100%;
-  position: relative;
-  & *:focus {
-    outline: none;
-  }
-  & > div {
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
 `;
 
 export const StatusMessage = styled.div<{ isError?: boolean }>`
@@ -30,7 +16,8 @@ export const StatusMessage = styled.div<{ isError?: boolean }>`
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  color: ${({ theme, isError }) => (isError ? theme.colors.error : theme.colors.textSecondary)};
+  color: ${({ theme, isError }) =>
+    isError ? theme.colors.error : theme.colors.textSecondary};
   background: ${({ theme }) => theme.colors.hover};
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   animation: ${fadeIn} 0.4s ease-out;
@@ -57,9 +44,7 @@ export const MessageTitle = styled.div`
   color: ${({ theme }) => theme.colors.textMain};
 `;
 
-export const MessageDesc = styled.div`
+export const MessageDescription = styled.div`
   font-size: 0.875rem;
   color: ${({ theme }) => theme.colors.textSecondary};
-  text-align: center;
-  max-width: 80%;
 `;

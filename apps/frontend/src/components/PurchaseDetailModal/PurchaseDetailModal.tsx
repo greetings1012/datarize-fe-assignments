@@ -1,5 +1,8 @@
-import { useCustomerPurchases } from '../../hooks/queries';
+import { useMemo } from 'react';
+import { useCustomerPurchases } from '../../queries/customer';
 import { useLockBodyScroll } from '../../hooks/useLockBodyScroll';
+import { PurchaseDetail } from '../../types/customer';
+import { UI_MESSAGES } from '../../constants/ui';
 import * as S from './PurchaseDetailModal.styles';
 
 interface PurchaseDetailModalProps {
@@ -8,9 +11,37 @@ interface PurchaseDetailModalProps {
   onClose: () => void;
 }
 
-export const PurchaseDetailModal = ({ customerId, customerName, onClose }: PurchaseDetailModalProps) => {
+interface GroupedPurchase {
+  date: string;
+  products: PurchaseDetail[];
+}
+
+export const PurchaseDetailModal = ({
+  customerId,
+  customerName,
+  onClose,
+}: PurchaseDetailModalProps) => {
   useLockBodyScroll();
   const { data, isLoading } = useCustomerPurchases(customerId);
+
+  const groupedPurchases = useMemo<GroupedPurchase[]>(() => {
+    if (!data) return [];
+
+    const groupedMap = data.reduce(
+      (acc, purchase) => {
+        if (!acc[purchase.date]) {
+          acc[purchase.date] = [];
+        }
+        acc[purchase.date].push(purchase);
+        return acc;
+      },
+      {} as Record<string, PurchaseDetail[]>,
+    );
+
+    return Object.entries(groupedMap)
+      .map(([date, products]) => ({ date, products }))
+      .sort((a, b) => b.date.localeCompare(a.date));
+  }, [data]);
 
   return (
     <S.Overlay onClick={onClose}>
@@ -20,19 +51,38 @@ export const PurchaseDetailModal = ({ customerId, customerName, onClose }: Purch
 
         <S.List>
           {isLoading ? (
-            <S.StatusMessage>로딩 중...</S.StatusMessage>
-          ) : data?.length === 0 ? (
-            <S.StatusMessage>구매 내역이 없습니다.</S.StatusMessage>
+            <S.StatusMessage>
+              {UI_MESSAGES.LOADING.PURCHASE_DETAIL}
+            </S.StatusMessage>
+          ) : groupedPurchases.length === 0 ? (
+            <S.StatusMessage>
+              {UI_MESSAGES.ERROR.NO_PURCHASE_HISTORY}
+            </S.StatusMessage>
           ) : (
-            data?.map((purchase) => (
-              <S.PurchaseCard key={purchase.date}>
-                <S.ProductImg src={purchase.imgSrc} alt={purchase.product} />
-                <S.Info>
-                  <S.ProductName>{purchase.product}</S.ProductName>
-                  <S.DetailText>구매일: {purchase.date}</S.DetailText>
-                  <S.Price>{purchase.price.toLocaleString()}원</S.Price>
-                </S.Info>
-              </S.PurchaseCard>
+            groupedPurchases.map((group) => (
+              <S.DateGroup key={group.date}>
+                <S.DateHeader>{group.date}</S.DateHeader>
+                {group.products.map((purchase, index) => (
+                  <S.PurchaseCard
+                    key={`${group.date}-${purchase.product}-${index}`}
+                  >
+                    <S.ProductImg
+                      src={purchase.imgSrc}
+                      alt={purchase.product}
+                    />
+                    <S.Info>
+                      <S.ProductName>{purchase.product}</S.ProductName>
+                      <S.DetailText>{purchase.quantity}개</S.DetailText>
+                      <S.Price>
+                        {(purchase.price / purchase.quantity).toLocaleString()}
+                        원 &nbsp;*&nbsp;
+                        {purchase.quantity}개&nbsp;=&nbsp;
+                        {purchase.price.toLocaleString()}원
+                      </S.Price>
+                    </S.Info>
+                  </S.PurchaseCard>
+                ))}
+              </S.DateGroup>
             ))
           )}
         </S.List>
