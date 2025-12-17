@@ -1,4 +1,4 @@
-import { useCustomerTable } from '../../hooks/useCustomerTable';
+import { useCustomerTable } from './useCustomerTable';
 import * as S from './CustomerTable.styles';
 
 import { PurchaseDetailModal } from '../../../../components/PurchaseDetailModal/PurchaseDetailModal';
@@ -12,7 +12,8 @@ export const CustomerTable = () => {
     selectedCustomer,
     data,
     isLoading,
-    isError,
+    error,
+    isSearching,
     handleNameFilterChange,
     handleSortOrderChange,
     openDetailModal,
@@ -20,6 +21,14 @@ export const CustomerTable = () => {
   } = useCustomerTable();
 
   const renderTableBody = () => {
+    if (isSearching) {
+      return (
+        <tr>
+          <S.Td colSpan={4}>{UI_MESSAGES.SEARCHING.CUSTOMER}</S.Td>
+        </tr>
+      );
+    }
+
     if (isLoading) {
       return (
         <tr>
@@ -28,10 +37,10 @@ export const CustomerTable = () => {
       );
     }
 
-    if (isError) {
+    if (error) {
       return (
         <tr>
-          <S.Td colSpan={4}>{UI_MESSAGES.ERROR.CUSTOMER_TABLE}</S.Td>
+          <S.Td colSpan={4}>{error.message}</S.Td>
         </tr>
       );
     }
