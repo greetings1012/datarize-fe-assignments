@@ -16,6 +16,7 @@ yarn test-frontend
 
 혹은
 
-```
+```cmd
+cd apps
 yarn test-frontend:ui
 ```
