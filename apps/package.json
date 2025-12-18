@@ -10,7 +10,9 @@
   ],
   "scripts": {
     "start-server": "yarn workspace backend start",
-    "start-client": "yarn workspace frontend dev"
+    "start-client": "yarn workspace frontend dev",
+    "test-frontend": "yarn workspace frontend test",
+    "test-frontend:ui": "yarn workspace frontend test:ui"
   },
   "prettier": {
     "singleQuote": true,
