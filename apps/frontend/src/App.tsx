@@ -5,9 +5,12 @@ import { Dashboard } from './pages/Dashboard';
 import { GlobalStyles } from './styles/GlobalStyles';
 import { theme } from './styles/theme';
 
+// 쿼리 재시도 횟수
+const QUERY_RETRY_COUNT = 3;
+
 // 쿼리 재시도 로직: 4xx 에러는 재시도하지 않음
 const shouldRetry = (failureCount: number, error: any) => {
-  if (failureCount >= 3) {
+  if (failureCount >= QUERY_RETRY_COUNT) {
     return false;
   }
 
