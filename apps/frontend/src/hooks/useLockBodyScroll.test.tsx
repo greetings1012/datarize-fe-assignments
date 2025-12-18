@@ -1,6 +1,7 @@
 // useLockBodyScroll 훅 테스트
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+
 import { useLockBodyScroll } from './useLockBodyScroll';
 
 describe('useLockBodyScroll', () => {

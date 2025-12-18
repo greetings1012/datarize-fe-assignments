@@ -1,10 +1,11 @@
 // 차트 유틸리티 함수 테스트
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { PurchaseFrequency } from '../../../../../types/purchase';
 import {
   formatPriceRangeLabel,
   transformChartData,
 } from './ChartContent.utils';
-import { PurchaseFrequency } from '../../../../../types/purchase';
 
 describe('formatPriceRangeLabel', () => {
   it('2만원 이하 범위를 "~2만"으로 변환해야 함', () => {

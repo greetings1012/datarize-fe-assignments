@@ -1,5 +1,6 @@
 // 에러 메시지 상수 및 헬퍼 함수 테스트
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
 import { API_ERROR_MESSAGES, getErrorMessage } from './messages';
 
 describe('getErrorMessage', () => {

@@ -1,5 +1,6 @@
 // 날짜 유틸리티 함수 테스트
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { getTodayKST } from './date';
 
 describe('getTodayKST', () => {
