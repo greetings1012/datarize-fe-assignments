@@ -1,4 +1,4 @@
-// 사용자에게 보여줄 친절한 에러 메시지 정의
+// 사용자에게 보여줄 에러 메시지 정의
 export const API_ERROR_MESSAGES = {
   SERVER_UNREACHABLE: '서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.',
   UNAUTHORIZED: '인증이 필요합니다.',
@@ -26,9 +26,9 @@ const STATUS_MESSAGE_MAP: Record<number, string> = {
   504: API_ERROR_MESSAGES.SERVER_UNREACHABLE,
 };
 
-// 상태 코드를 받아 적절한 메시지를 반환하는 헬퍼 함수
+// 상태 코드를 받아 메시지를 반환
 export const getErrorMessage = (status?: number): string => {
-  if (!status) {
+  if (status === undefined || status === null || status === 0) {
     return API_ERROR_MESSAGES.NETWORK_ERROR;
   }
   return STATUS_MESSAGE_MAP[status] ?? API_ERROR_MESSAGES.UNKNOWN;
